@@ -27,12 +27,12 @@ def swap(array_input, first_index_to_swap_input, second_index_to_swap_input):
         return my_array_of_numbers;
       
     # If either of the indices are too large, do not proceed and print a message: 
-    if (first_index_to_swap_input >= len(array_input) | second_index_to_swap_input >= len(array_input)):
+    if (first_index_to_swap_input >= len(array_input) or second_index_to_swap_input >= len(array_input)):
         print('Could not perform swap. One of your indices are too large!');
         return my_array_of_numbers;
     
     # If either of the indices are too small, do not proceed and print a message: 
-    if (first_index_to_swap_input < 0 | second_index_to_swap_input < 0):
+    if (first_index_to_swap_input < 0 or second_index_to_swap_input < 0):
         print('Could not perform swap. One of your indices are too small!');
         return my_array_of_numbers;
 
