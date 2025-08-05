@@ -44,6 +44,11 @@ def swap(array_input, first_index_to_swap_input, second_index_to_swap_input):
 
 my_array_of_numbers = swap(my_array_of_numbers, 4, 5);
 
+# Now order in descending order:
+my_array_of_numbers = swap(my_array_of_numbers, 0, 5);
+my_array_of_numbers = swap(my_array_of_numbers, 1, 4);
+my_array_of_numbers = swap(my_array_of_numbers, 2, 3);
+
 # Print the array:
 print ('Array after swap:');
 for each_indiviual_index in my_array_of_numbers:
