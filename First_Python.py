@@ -4,6 +4,10 @@ int, int_2 = 3, 7;
 sum = int + int_2;
 
 
+my_array = [0, 1, 2, 3]
+print(my_array[-2]) # -2 means "second-to-last index"
+
+
 print ('Hello. Sum is: ');
 print (sum);
 
