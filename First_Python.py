@@ -1,3 +1,4 @@
+from enum import Enum
 
 
 int, int_2 = 3, 7;
@@ -5,10 +6,11 @@ sum = int + int_2;
 
 
 my_array = [0, 1, 2, 3]
+print ('Hello. Second-to-last index is: ');
 print(my_array[-2]) # -2 means "second-to-last index"
 
 
-print ('Hello. Sum is: ');
+print ('Sum is: ');
 print (sum);
 
 
@@ -21,6 +23,7 @@ for each_indiviual_index in my_array_of_numbers:
 #for (var current_index = 0; current_index < my_array_of_numbers; current_index++):
     print (each_indiviual_index);
     
+# Function definition for "swap()"
 def swap(array_input, first_index_to_swap_input, second_index_to_swap_input):
 
     """Swap two indices of an array."""
@@ -57,3 +60,35 @@ my_array_of_numbers = swap(my_array_of_numbers, 2, 3);
 print ('Array after swap:');
 for each_indiviual_index in my_array_of_numbers:
     print (each_indiviual_index);
+    
+class Person:
+    
+    animal = "Human"
+    
+    # The __init()__ function is similar to the constructor, which is known as "__new__()" in Python.
+    # __init()__ is run after __new()__ and is used more frequently. __new()__ is for more advanced
+    # things (one thing you can use it for is ensuring only one instance of an object exists...this
+    # is called a "singleton").
+    # The first argument of any function inside of a class must be "self", which refers to the current object.
+    def __init__(self, name_input, age_input):
+        # Create new parameters "name" and "age" for this object:
+        self.name = name_input
+        self.age = age_input
+        self.hair_color = 0 # Python doens't like it when you create a variable but don't assign it anything, unlike Java or C++.
+                            # Assign your variables defautl values.
+       
+Rosie = Person("Rosie", 18)
+print (Rosie.name)
+    
+class Hair_Color(Enum):
+    BLACK = 0
+    BROWN = 1
+    BLOND = 2
+    RED = 3
+    WHITE = 4
+    
+Rosie.hair_color = Hair_Color.BROWN
+print (Rosie.hair_color)
+
+    
+    
