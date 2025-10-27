@@ -63,8 +63,6 @@ for each_indiviual_index in my_array_of_numbers:
     
 class Person:
     
-    animal = "Human"
-    
     # The __init()__ function is similar to the constructor, which is known as "__new__()" in Python.
     # __init()__ is run after __new()__ and is used more frequently. __new()__ is for more advanced
     # things (one thing you can use it for is ensuring only one instance of an object exists...this
@@ -74,11 +72,33 @@ class Person:
         # Create new parameters "name" and "age" for this object:
         self.name = name_input
         self.age = age_input
-        self.hair_color = 0 # Python doens't like it when you create a variable but don't assign it anything, unlike Java or C++.
-                            # Assign your variables defautl values.
-       
-Rosie = Person("Rosie", 18)
-print (Rosie.name)
+        
+    # Create new parameter "creature"
+    creature = "Unspecified"
+    
+    def talk(self, speaker_input, speech_input):
+        print(speaker_input, ": ", speech_input)
+                            
+class Human (Person):
+    
+    def __init__(self, name_input, age_input):
+        # Create new parameters "name" and "age" for this object:
+        self.name = name_input
+        self.age = age_input
+        
+    creature = "Human"
+    
+    hair_color = 0 # Python doens't like it when you create a variable but don't assign it anything, unlike Java or C++.
+                   # Assign your variables default values.
+    
+class Alien (Person):
+    
+    def __init__(self, name_input, age_input):
+        # Create new parameters "name" and "age" for this object:
+        self.name = name_input
+        self.age = age_input
+    
+    creature = "Alien"
     
 class Hair_Color(Enum):
     BLACK = 0
@@ -87,8 +107,12 @@ class Hair_Color(Enum):
     RED = 3
     WHITE = 4
     
+Rosie = Person("Rosie", 18)
 Rosie.hair_color = Hair_Color.BROWN
+
+print (Rosie.name)
 print (Rosie.hair_color)
+Rosie.talk(Rosie.name, "Hello! I hope you have a wonderful day!")
 
     
     
