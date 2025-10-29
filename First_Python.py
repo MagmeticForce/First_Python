@@ -114,5 +114,39 @@ print (Rosie.name)
 print (Rosie.hair_color)
 Rosie.talk(Rosie.name, "Hello! I hope you have a wonderful day!")
 
-    
-    
+
+
+# Lists and dictionaries
+# * Lists: basically like arrays.
+# * Dictionaries: basically like structures, except each parameter is a string
+# * The boundaries of lists are defined by [], and for dictionaries, it's by {}
+# Example: a dictionary for a TV show episode:
+# {
+#     'Show Title': 'Coolest Show Of All Time' 
+#     'Episode Number': '1'
+#     'Episode Title': 'The Awesomeness Scheme'
+#     'Episode Length': 57.42
+# }
+# Then, we can make a list of dictionaries that has multiple episodes, and the list can be an entire show!:
+[
+    {
+        'Episode Number': '1'
+        'Episode Title': 'The Awesomeness Scheme'
+        'Episode Length': 57.42
+    }
+    {
+        'Episode Number': '2'
+        'Episode Title': 'The Missing Truck'
+        'Episode Length': 53.21
+    }
+    {
+        'Episode Number': '3'
+        'Episode Title': 'The Blacksmiths Secret'
+        'Episode Length': 58.55
+    }
+]
+# Example: suppose we have a list of dictionaries. Each dictionary contains an id, a name, and a position, and
+# it stores informatiuon about an individual player on a team. The list then, is a team. To print each player
+# name, this is how we do it:
+# for each_player in team:
+#    print(player['name'])    
