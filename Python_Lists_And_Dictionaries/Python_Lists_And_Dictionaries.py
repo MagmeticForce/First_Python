@@ -49,3 +49,8 @@ print(episodes)
 # loop.
 for each_episode in episodes:
     print(each_episode["Length"])
+
+# Note: all of the values in the "episodes" dictionary
+# are strings. When a CSV is put into a list of dictionaries,
+# all of its values are string-ified no matter what type
+# they were in the CSV.
