@@ -1,10 +1,5 @@
 import csv
 
-
-# TO-DO: your remove_anything_that_isnt_a_letter_in() is stuck in an infinite loop
-# Currently, current_character is stuck at 0 while the string length is stuck at 7
-
-
 # ############# #
 # CONTENTS
 # 1. read_csv_file() definition
@@ -297,29 +292,30 @@ def remove_anything_that_isnt_a_letter_in(string_input):
     last_character_that_is_a_letter = -1
     first_half_of_string = ""
     second_half_of_string = ""
+
+    # Go through the entire string from left-to-right, and each time a non-letter is encountered, get rid of it.
     while current_character < len(string_output):
-        print ("Length of given string:" + str(len(string_output)))
-        print ("Current character:" + str(current_character))
-        if not this_character_is_a_letter(string_input[current_character]):
+
+        if not this_character_is_a_letter(string_output[current_character]):
+
             # Get rid of the current character from the string. To do so, do the following.
             
             # 1) Get everything that is before the current character
             if current_character > 0:
-                first_half_of_string = string_input[0 : current_character]
+                first_half_of_string = string_output[0 : current_character]
             else:
-                first_half_of_string = "" # This could potentially trigger an error. Consider replacing with ""
+                first_half_of_string = ""   # This could potentially trigger an error. Consider replacing with ""
                                             # (although also be mindful that "" might somehow count as an additional
                                             # character like a space or something)
-            
+
             # 2) Get everything that is after the current character
-            if current_character != len(string_input) - 1:
-                second_half_of_string = string_input[current_character + 1 : len(string_input)]
+            if current_character != len(string_output) - 1:
+                second_half_of_string = string_output[current_character + 1 : len(string_output)]
             else:
                 second_half_of_string = ""
 
+            # 3) Put these two halves together, and now you have the string except with the current character removed
             string_output = first_half_of_string + second_half_of_string
-
-            print (string_output)
 
             # Removing this character will offset the current_character, because now that current_character is
             # gone, "current_character" will now point to the next character, which is bad because we will evntually
@@ -346,6 +342,7 @@ def remove_anything_that_isnt_a_letter_in(string_input):
         #
         #    v
         # gghij 1k (current_character += 1)
+
     return string_output
 
 
@@ -375,7 +372,18 @@ def remove_anything_that_isnt_a_letter_in(string_input):
 movie_ratings_data = read_csv_file("movie-ratings.csv")
 print(movie_ratings_data)
 
+current_row = 2
+
+# print("'" + remove_anything_that_isnt_a_letter_in(movie_ratings_data[17]["Genre"]) + "'")
+
 for each_movie in movie_ratings_data:
-    print(remove_anything_that_isnt_a_letter_in(each_movie["Genre"]))
+    # save string before removal
+    # save string after removal
+    # if two strings don't match, entry is invalid
+    # elif string doesn't match one of the three valid genres, string is invalud
+    # else string is valid
+    print(str(current_row) + " " + remove_anything_that_isnt_a_letter_in(each_movie["Genre"]))
+    current_row += 1
 
 print ("Done!")
+print ("----------------------------------------------------------")
