@@ -346,19 +346,70 @@ def remove_anything_that_isnt_a_letter_in(string_input):
     return string_output
 
 
-#def record_is_valid (record_input):
-# Maybe bfore this, convert it to caps. See if Python has a built-in toUpperCase() thing
-#    try:
-#        # j
-#         
-#    except ValueError:
-#        # j
-#
-# In here or in the main code: see if the resulting string from remove_anything_that_isnt_a_letter_in()
-# matches one of the three valid genres.
-# Then you also must do the critics average and audience rating average by adding anything that IS a number.
-#
+def record_is_valid (record_input):
 
+    # Note-to-dev: if you want to make it so that leading or trailing spaces in the Genre are allowed, you can do the 
+    # following:
+    # * Create a new function "remove_anything_that_isnt_a_letter_or_space()". Its logic is just like
+    #   remove_anything_that_isnt_a_letter_in(), except the "if" statement checks if the current character is a space
+    # * make a new variable genre_with_only_letters_and_spaces = 
+    #   remove_anything_that_isnt_a_letter_or_space(record_input["Genre"])
+    # * go to where you said "if genre_given_in_the_record != genre_with_only_letters: return False"
+    # * replace that with "if "genre_given_in_the_record != genre_with_only_letters_and_spaces
+    # Consider doing this so you can makemore flexible and less frustrating program?
+    
+    LIST_OF_VALID_GENRES = ["ROMANCE", "SCIFI", "ACTION"]
+
+    the_record_is_good_so_far = True
+
+    # First, see if the Title is valid
+    if len(record_input["Title"]) < 1: 
+        return False
+    
+    # Next, check the Genre:
+    if len(record_input["Genre"]) < 1: 
+        return False   
+    else:
+        genre_given_in_the_record = record_input["Genre"]
+        genre_with_only_letters = remove_anything_that_isnt_a_letter_in(record_input["Genre"])
+
+        if genre_given_in_the_record != genre_with_only_letters:
+            return False
+        else:
+            genre_in_all_caps = genre_with_only_letters.upper()
+
+            for any_of_the_valid_genres in LIST_OF_VALID_GENRES:
+                if genre_in_all_caps == any_of_the_valid_genres:
+                    the_record_is_good_so_far = True
+                    break
+                else:
+                  the_record_is_good_so_far = False  
+
+            if not the_record_is_good_so_far:
+                return False
+            
+    # Then, check the Critic Rating column
+    try:
+        critic_rating = int(record_input["Critic rating"])
+    except ValueError:
+        return False
+    if critic_rating < 1 or critic_rating > 5:
+        return False
+    
+    # Finally, check the "Viewer Rating" column
+    try:
+        viewer_rating = int(record_input["Viewer rating"])
+    except ValueError:
+        return False
+    if viewer_rating < 1 or viewer_rating > 5:
+        return False
+
+    # If it never returned False, then the record must be valid
+    return True
+    
+def calculate_average(values_input):
+    pass
+    
 
 
 # ######################################################## #
@@ -370,20 +421,24 @@ def remove_anything_that_isnt_a_letter_in(string_input):
 # ######################################################## #
 
 movie_ratings_data = read_csv_file("movie-ratings.csv")
-print(movie_ratings_data)
+#print(movie_ratings_data)
 
-current_row = 2
+for each_movie in movie_ratings_data:
+    print("Title:", each_movie["Title"] + ".", "Genre:", each_movie["Genre"] + ".", "Critic rating:", each_movie["Critic rating"] + ".", "Audience rating:", each_movie["Viewer rating"] + ".")
+    if record_is_valid(each_movie):
+        print ("VALID RECORD")
+    else:
+        print ("INVALID RECORD")
+
 
 # print("'" + remove_anything_that_isnt_a_letter_in(movie_ratings_data[17]["Genre"]) + "'")
 
-for each_movie in movie_ratings_data:
-    # save string before removal
-    # save string after removal
-    # if two strings don't match, entry is invalid
-    # elif string doesn't match one of the three valid genres, string is invalud
-    # else string is valid
-    print(str(current_row) + " " + remove_anything_that_isnt_a_letter_in(each_movie["Genre"]))
-    current_row += 1
+#current_row = 2
+#for each_movie in movie_ratings_data:
+    #print(str(current_row) + " " + remove_anything_that_isnt_a_letter_in(each_movie["Genre"]))
+    #current_row += 1
+
+
 
 print ("Done!")
 print ("----------------------------------------------------------")
