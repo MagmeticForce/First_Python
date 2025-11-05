@@ -14,6 +14,12 @@ import csv
 # ############# #
 
 
+# TO-DO:
+# * Test calculate_average() 
+#   * Make separate lists for the viewer rating and audience rating. 
+#   * Values only get added to each list if it is part of a valid entry
+
+
 
 
 
@@ -71,11 +77,17 @@ def read_csv_file(file_name_input):
 # ######################################################## #
 # ######################################################## #
 
+print(" ")
+print(" ")
+print(" ")
+print(" ")
+print(" ")
+
 episodes = read_csv_file('episodes.csv')
 # The data type of "episodes" is a list
 # Each element of the list is a dictionary
 # data type.
-
+print("Episodes.csv:")
 print(episodes)
 # You can just tell Python to
 # print a list, and it'll just do it.
@@ -86,11 +98,14 @@ print(episodes)
 # dictionaries, and you only want a specific
 # value of each dictionary, you'll need a
 # loop.
+print("Episode lengths:")
 for each_episode in episodes:
     print(each_episode["Length"])
 
 # Tip: accessing dictionary values are just like accessing array values,
 # but instead of putting an index, you put the parameter name.
+
+print("-----------------------------------------------------")
 
 
 
@@ -106,6 +121,10 @@ for each_episode in episodes:
 # ######################################################## #
 
 sloth_thieves = read_csv_file("sloth-theft.csv")
+
+print("sloth-theft.csv:")
+print(sloth_thieves)
+
 print ("Number of sloths: " + str(len(sloth_thieves)))
 
 for each_sloth in sloth_thieves:
@@ -181,6 +200,10 @@ def the_record_is_okay(record_input):
 # ######################################################## #
 
 goat_scores_data = read_csv_file("db-lesson-scores-bad-data.csv")
+
+print("db-lesson-scores-bad-data.csv:")
+print(goat_scores_data)
+
 print ("Number of records:" + str(len(goat_scores_data)))
 
 for each_piece_of_data in goat_scores_data:
@@ -201,6 +224,8 @@ for each_piece_of_data in goat_scores_data:
 
 print("Total before: " + str(total_before))
 print("Total after: " + str(total_after))
+
+print("-----------------------------------------------------")
 
 
 
@@ -345,18 +370,74 @@ def remove_anything_that_isnt_a_letter_in(string_input):
 
     return string_output
 
+def remove_anything_that_isnt_a_letter_or_space_in(string_input):
+    string_output = string_input
+    current_character = 0
+    last_character_that_is_a_letter = -1
+    first_half_of_string = ""
+    second_half_of_string = ""
+
+    # Go through the entire string from left-to-right, and each time a non-letter is encountered, get rid of it.
+    while current_character < len(string_output):
+
+        if not this_character_is_a_letter(string_output[current_character]) and string_output[current_character] != " ":
+
+            # Get rid of the current character from the string. To do so, do the following.
+            
+            # 1) Get everything that is before the current character
+            if current_character > 0:
+                first_half_of_string = string_output[0 : current_character]
+            else:
+                first_half_of_string = ""   # This could potentially trigger an error. Consider replacing with ""
+                                            # (although also be mindful that "" might somehow count as an additional
+                                            # character like a space or something)
+
+            # 2) Get everything that is after the current character
+            if current_character != len(string_output) - 1:
+                second_half_of_string = string_output[current_character + 1 : len(string_output)]
+            else:
+                second_half_of_string = ""
+
+            # 3) Put these two halves together, and now you have the string except with the current character removed
+            string_output = first_half_of_string + second_half_of_string
+
+            # Removing this character will offset the current_character, because now that current_character is
+            # gone, "current_character" will now point to the next character, which is bad because we will evntually
+            # move onto the next character, so we will skip a character. (Just keep reading, it will make sense.)
+            current_character -= 1
+        # Move onto the next character
+        current_character += 1
+        # According to this logic, if we ended up removing a character, it would look something like this (the down arrow 
+        # points at the current character):
+        #   v
+        # gg1hij 1k
+        #
+        #   v
+        # gghij 1k (Remove character)
+        #
+        #  v
+        # gghij 1k (current_character -= 1)
+        #
+        #   v
+        # gghij 1k (current_character += 1)
+        # Meanwhile, if we did not remove a character:
+        #   v
+        # gghij 1k
+        #
+        #    v
+        # gghij 1k (current_character += 1)
+
+    return string_output
 
 def record_is_valid (record_input):
 
     # Note-to-dev: if you want to make it so that leading or trailing spaces in the Genre are allowed, you can do the 
     # following:
-    # * Create a new function "remove_anything_that_isnt_a_letter_or_space()". Its logic is just like
-    #   remove_anything_that_isnt_a_letter_in(), except the "if" statement checks if the current character is a space
     # * make a new variable genre_with_only_letters_and_spaces = 
     #   remove_anything_that_isnt_a_letter_or_space(record_input["Genre"])
     # * go to where you said "if genre_given_in_the_record != genre_with_only_letters: return False"
     # * replace that with "if "genre_given_in_the_record != genre_with_only_letters_and_spaces
-    # Consider doing this so you can makemore flexible and less frustrating program?
+    # Consider doing this so you can make more flexible and less frustrating program?
     
     LIST_OF_VALID_GENRES = ["ROMANCE", "SCIFI", "ACTION"]
 
@@ -370,14 +451,24 @@ def record_is_valid (record_input):
     if len(record_input["Genre"]) < 1: 
         return False   
     else:
-        genre_given_in_the_record = record_input["Genre"]
-        genre_with_only_letters = remove_anything_that_isnt_a_letter_in(record_input["Genre"])
+        genre_with_only_letters_and_spaces = remove_anything_that_isnt_a_letter_or_space_in(record_input["Genre"])
 
-        if genre_given_in_the_record != genre_with_only_letters:
+        if record_input["Genre"] != genre_with_only_letters_and_spaces: # i.e. if the genre given in the record has
+                                                                        # things other than letters and spaces
             return False
-        else:
+            # None of the valid genres has anything other than letters (so no numbers), so if the genre in the record
+            # has things other than letters, then it is not valid.
+            # We keep spaces in order to allow for there to be leading or trailing spaces in the record.
+        else: # (if the Genre in the given record does NOT have things other than letters or spaces, i.e., it only 
+              # has letters and spaces)
+            
+            # Remove the spaces and convert it up uppercase so we can compare it with valid genre names
+            # (since the valid genres are in all uppercase and have no spaces...making it like this keeps
+            # things consistent)
+            genre_with_only_letters = remove_anything_that_isnt_a_letter_in(record_input["Genre"])
             genre_in_all_caps = genre_with_only_letters.upper()
 
+            # Determine if the genre name is valid
             for any_of_the_valid_genres in LIST_OF_VALID_GENRES:
                 if genre_in_all_caps == any_of_the_valid_genres:
                     the_record_is_good_so_far = True
@@ -390,7 +481,7 @@ def record_is_valid (record_input):
             
     # Then, check the Critic Rating column
     try:
-        critic_rating = int(record_input["Critic rating"])
+        critic_rating = int(record_input["Critic rating"]) # (in other words, try to convert it to an integer)
     except ValueError:
         return False
     if critic_rating < 1 or critic_rating > 5:
@@ -398,7 +489,7 @@ def record_is_valid (record_input):
     
     # Finally, check the "Viewer Rating" column
     try:
-        viewer_rating = int(record_input["Viewer rating"])
+        viewer_rating = int(record_input["Viewer rating"]) # (in other words, try to convert it to an integer)
     except ValueError:
         return False
     if viewer_rating < 1 or viewer_rating > 5:
@@ -407,9 +498,21 @@ def record_is_valid (record_input):
     # If it never returned False, then the record must be valid
     return True
     
+# Caluclate average given a list of numbers
 def calculate_average(values_input):
-    pass
+
+    result_output = 0
+    number_of_values = 0
     
+    for each_value in values_input:
+        result_output += each_value
+        number_of_values += 1
+
+    if number_of_values != 0: # just in case!
+        result_output /= number_of_values
+
+    return result_output
+
 
 
 # ######################################################## #
@@ -421,24 +524,34 @@ def calculate_average(values_input):
 # ######################################################## #
 
 movie_ratings_data = read_csv_file("movie-ratings.csv")
-#print(movie_ratings_data)
 
-for each_movie in movie_ratings_data:
-    print("Title:", each_movie["Title"] + ".", "Genre:", each_movie["Genre"] + ".", "Critic rating:", each_movie["Critic rating"] + ".", "Audience rating:", each_movie["Viewer rating"] + ".")
-    if record_is_valid(each_movie):
-        print ("VALID RECORD")
-    else:
-        print ("INVALID RECORD")
-
+print("movie-ratings.csv:")
+print(movie_ratings_data)
 
 # print("'" + remove_anything_that_isnt_a_letter_in(movie_ratings_data[17]["Genre"]) + "'")
 
-#current_row = 2
-#for each_movie in movie_ratings_data:
-    #print(str(current_row) + " " + remove_anything_that_isnt_a_letter_in(each_movie["Genre"]))
-    #current_row += 1
+critics_ratings = []
+viewer_ratings = []
+number_of_records = 0
+number_of_valid_records = 0
 
+for each_movie in movie_ratings_data:
+    number_of_records += 1
+    if record_is_valid(each_movie):
+        number_of_valid_records += 1
+        critics_ratings.append(int(each_movie["Critic rating"]))
+        viewer_ratings.append(int(each_movie["Viewer rating"]))
 
+print("Number of records: " + str(number_of_records))
+print("Number of valid records: " + str(number_of_valid_records))
+print("Average critic ratings: " + str(calculate_average(critics_ratings)))
+print("Average viewer ratings: " + str(calculate_average(viewer_ratings)))
 
-print ("Done!")
-print ("----------------------------------------------------------")
+#    print("Title:", each_movie["Title"] + ".", "Genre:", each_movie["Genre"] + ".", "Critic rating:", each_movie["Critic rating"] + ".", "Audience rating:", each_movie["Viewer rating"] + ".")
+#    if record_is_valid(each_movie):
+#        print ("VALID RECORD")
+#    else:
+#        print ("INVALID RECORD")
+
+#print ("Done!")
+#print ("----------------------------------------------------------")
